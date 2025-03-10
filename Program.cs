@@ -1,6 +1,8 @@
+using DeliveryFeeApi.CronJobs;
 using DeliveryFeeApi.Data;
 using DeliveryFeeApi.Repository;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IStationWeatherRepository, StationWeatherRepository>();
+
+builder.Services.AddQuartz(options =>
+{
+    var jobKey = JobKey.Create("LoadWeatherJob");
+    options.AddJob<LoadStationWeatherJob>(jobKey)
+        .AddTrigger(trigger =>
+        trigger
+            .ForJob(jobKey)
+            .StartAt(DateTime.Now.AddSeconds(5))
+            .WithSimpleSchedule(time => time.WithIntervalInSeconds(10).RepeatForever()));
+});
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+});
 
 var app = builder.Build();
 
