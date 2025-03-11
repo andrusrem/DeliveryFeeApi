@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.CodeAnalysis.Elfie.Extensions;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
 namespace DeliveryFeeApi.Data
@@ -8,27 +9,20 @@ namespace DeliveryFeeApi.Data
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         [XmlElement(ElementName = "name")]
-        public string StationName { get; set; }
-        [Required]
+        public string? StationName { get; set; }
         [XmlElement(ElementName = "wmocode")]
-        
-        public int VmoCode {  get; set; }
+        public int? VmoCode {  get; set; }
         [XmlElement(ElementName = "airtemperature")]
-        public decimal AirTemp { get; set; }
+        public decimal? AirTemp { get; set; }
         [XmlElement(ElementName = "windspeed")]
-        public decimal WindSpeed { get; set; }
+        public decimal? WindSpeed { get; set; }
         [XmlElement(ElementName = "phenomenon")]
-        public string WeatherPhenomenon {  get; set; }
+        public string? WeatherPhenomenon {  get; set; }
         [XmlElement(ElementName = "timestamp")]
-        public long Timestamp { get; set; }
+        public long Timestamp { get; set; } = DateTime.Now.ToLong();
 
-        public StationWeather(string stationName, string weatherPhenomenon)
-        {
-            StationName = stationName;
-            WeatherPhenomenon = weatherPhenomenon;
-        }
+        
 
     }
 }
