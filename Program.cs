@@ -1,6 +1,7 @@
 using DeliveryFeeApi.CronJobs;
 using DeliveryFeeApi.Data;
 using DeliveryFeeApi.Repository;
+using DeliveryFeeApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
@@ -15,7 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IStationWeatherService, StationWeatherService>();
 builder.Services.AddScoped<IStationWeatherRepository, StationWeatherRepository>();
+
+builder.Services.AddHttpClient();
+
 
 builder.Services.AddQuartz(options =>
 {
@@ -42,6 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthorization();
 
