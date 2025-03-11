@@ -30,7 +30,7 @@ builder.Services.AddQuartz(options =>
         trigger
             .ForJob(jobKey)
             .StartAt(DateTime.Now.AddSeconds(5))
-            .WithSimpleSchedule(time => time.WithIntervalInSeconds(10).RepeatForever()));
+            .WithSimpleSchedule(time => time.WithIntervalInHours(1).RepeatForever()));
 });
 builder.Services.AddQuartzHostedService(options =>
 {

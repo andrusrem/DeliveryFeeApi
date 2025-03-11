@@ -6,10 +6,12 @@ namespace DeliveryFeeApi.Repository
     public class StationWeatherRepository : IStationWeatherRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<StationWeatherRepository> _logger;
 
-        public StationWeatherRepository(ApplicationDbContext context)
+        public StationWeatherRepository(ApplicationDbContext context, ILogger<StationWeatherRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<List<StationWeather>> List()
@@ -20,33 +22,37 @@ namespace DeliveryFeeApi.Repository
         public async Task<StationWeather?> FindById(int id)
         {
             var station = await _context.StationWeathers.FindAsync(id);
-            if(station == null)
+            if (station == null)
             {
                 return null;
             }
             return station;
         }
 
-        public async Task Save(int id, StationWeather station)
+        public async Task<StationWeather> Save(StationWeather station)
         {
-            var new_station = _context.StationWeathers.FirstOrDefault(x => x.Id == id);
-            if(new_station == null)
+            try
             {
-                await _context.AddAsync(station);
+                var new_station = new StationWeather
+                {
+                    StationName = station.StationName,
+                    VmoCode = station.VmoCode,
+                    AirTemp = station.AirTemp,
+                    WindSpeed = station.WindSpeed,
+                    WeatherPhenomenon = station.WeatherPhenomenon,
+                    Timestamp = station.Timestamp
+                };
+                await _context.StationWeathers.AddAsync(new_station);
+                _context.SaveChanges();
+                _logger.LogInformation("Created new StationWeather");
+                return new_station;
+                
             }
-            else
+            catch (Exception ex)
             {
-                new_station.StationName = station.StationName;
-                new_station.VmoCode = station.VmoCode;
-                new_station.AirTemp = station.AirTemp;
-                new_station.WindSpeed = station.WindSpeed;
-                new_station.WeatherPhenomenon = station.WeatherPhenomenon;
-                new_station.Timestamp = station.Timestamp;
-                _context.Update(station);
+                throw;
             }
 
-            await _context.SaveChangesAsync();
         }
-
     }
 }

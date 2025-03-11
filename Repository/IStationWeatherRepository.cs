@@ -6,7 +6,7 @@ namespace DeliveryFeeApi.Repository
     {
         Task<List<StationWeather>> List();
         Task<StationWeather?> FindById(int id);
-        Task Save(int id, StationWeather station);
+        Task<StationWeather> Save(StationWeather station);
 
     }
 }

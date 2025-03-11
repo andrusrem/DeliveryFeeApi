@@ -30,13 +30,13 @@ namespace DeliveryFeeApi.Services
             {
                 response.EnsureSuccessStatusCode();
                 var responseData = await response.Content.ReadAsStringAsync();
-                var weatherData = DeserializeWeatherData(responseData);
-                _logger.LogInformation($"Information: {weatherData.ToJson()}");
-                return DeserializeWeatherData(responseData);
+                var weatherData = ParseWeatherData(responseData);
+                _logger.LogInformation($"Information: {weatherData.Count}");
+                return ParseWeatherData(responseData);
             }
         }
 
-        public List<StationWeather> DeserializeWeatherData(string xml)
+        public List<StationWeather> ParseWeatherData(string xml)
         {
             var doc = XDocument.Parse(xml);
             var stations = doc.Descendants("station").Select(s => new StationWeather
@@ -50,6 +50,21 @@ namespace DeliveryFeeApi.Services
             return stations;
         }
         
+        public async Task LoadToDatabase()
+        {
+            List<StationWeather> stations = await GetWeatherData();
+
+            foreach ( StationWeather station in stations )
+            {
+                if (station.StationName == "Tallinn-Harku" || station.StationName == "Tartu-Tõravere" || station.StationName == "Pärnu")
+                {
+                    _logger.LogInformation($"Information: Ready to load {station.ToJson()}");
+                    await _stationWeatherRepository.Save(station);
+                }
+
+            }
+
+        }
 
     }
 }

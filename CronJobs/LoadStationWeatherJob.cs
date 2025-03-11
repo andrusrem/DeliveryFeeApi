@@ -1,4 +1,6 @@
-﻿using Quartz;
+﻿using DeliveryFeeApi.Data;
+using DeliveryFeeApi.Services;
+using Quartz;
 
 namespace DeliveryFeeApi.CronJobs
 {
@@ -6,16 +8,18 @@ namespace DeliveryFeeApi.CronJobs
     public class LoadStationWeatherJob : IJob
     {
         private readonly ILogger _logger;
-        public LoadStationWeatherJob(ILogger<LoadStationWeatherJob> logger)
+        private readonly IStationWeatherService _stationWeatherService;
+        public LoadStationWeatherJob(ILogger<LoadStationWeatherJob> logger, IStationWeatherService stationWeatherService)
         {
             _logger = logger;
+            _stationWeatherService = stationWeatherService;
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            _logger.LogInformation($"Load Weather data job executed on {DateTime.UtcNow}");
-
-            return Task.CompletedTask;
+            await _stationWeatherService.LoadToDatabase();
+            _logger.LogInformation($"Load Weather data job executed on {DateTime.UtcNow} ");
+            
         }
     }
 }
