@@ -2,6 +2,7 @@ using DeliveryFeeApi.CronJobs;
 using DeliveryFeeApi.Data;
 using DeliveryFeeApi.Repository;
 using DeliveryFeeApi.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
@@ -18,6 +19,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IStationWeatherService, StationWeatherService>();
 builder.Services.AddScoped<IStationWeatherRepository, StationWeatherRepository>();
+builder.Services.AddScoped<IRegionalBaseFeeRepository, RegionalBaseFeeRepository>();
+builder.Services.AddScoped<IWindSpeedExtraFeeRepository, WindSpeedExtraFeeRepository>();
+builder.Services.AddScoped<IWeatherPhenomenonExtraFeeRepository, WeatherPhenomenonExtraFeeRepository>();
+builder.Services.AddScoped<IAirTemperatureExtraFeeRepository, AirTemperatureExtraFeeRepository>();
 
 builder.Services.AddHttpClient();
 
@@ -52,5 +57,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    SeedData.Generate(applicationDbContext);
+
+}
 
 app.Run();
