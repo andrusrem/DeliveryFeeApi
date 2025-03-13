@@ -38,7 +38,6 @@ namespace DeliveryFeeApi.Repository
                     LowerTemperature = extra_fee.LowerTemperature,
                     UpperTemperature = extra_fee.UpperTemperature,
                     VehicleType = extra_fee.VehicleType,
-                    StationName = extra_fee.StationName,
                     Price = extra_fee.Price,
                 };
                 await _context.AirTemperatureExtraFees.AddAsync(new_extra_fee);

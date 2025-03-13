@@ -38,7 +38,6 @@ namespace DeliveryFeeApi.Repository
                     LowerSpeed = extra_fee.LowerSpeed,
                     UpperSpeed = extra_fee.UpperSpeed,
                     VehicleType = extra_fee.VehicleType,
-                    StationName = extra_fee.StationName,
                     Price = extra_fee.Price,
                 };
                 await _context.WindSpeedExtraFees.AddAsync(new_extra_fee);

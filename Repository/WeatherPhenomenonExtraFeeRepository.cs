@@ -37,7 +37,6 @@ namespace DeliveryFeeApi.Repository
                 {
                     WeatherPhenomenon = extra_fee.WeatherPhenomenon,
                     VehicleType = extra_fee.VehicleType,
-                    StationName = extra_fee.StationName,
                     Price = extra_fee.Price,
                 };
                 await _context.WeatherPhenomenonExtraFees.AddAsync(new_extra_fee);
