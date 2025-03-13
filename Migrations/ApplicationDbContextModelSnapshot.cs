@@ -28,9 +28,6 @@ namespace DeliveryFeeApi.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StationName")
-                        .HasColumnType("INTEGER");
-
                     b.Property<decimal>("UpperTemperature")
                         .HasColumnType("TEXT");
 
@@ -100,9 +97,6 @@ namespace DeliveryFeeApi.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StationName")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("VehicleType")
                         .HasColumnType("INTEGER");
 
@@ -125,9 +119,6 @@ namespace DeliveryFeeApi.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("StationName")
-                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("UpperSpeed")
                         .HasColumnType("TEXT");
