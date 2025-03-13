@@ -44,6 +44,25 @@ builder.Services.AddQuartzHostedService(options =>
 
 var app = builder.Build();
 
+//Add Auto-Migration functionality
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    for (int i = 0; i < 10; i++) // Retry loop for database readiness
+    {
+        try
+        {
+            dbContext.Database.Migrate();
+            break; // Break if migration is successful
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Migration attempt {i + 1} failed: {ex.Message}");
+            Thread.Sleep(5000); // Wait 5 seconds before retrying
+        }
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -58,6 +77,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//Add Seeder for Extra fee seeding
 using (var scope = app.Services.CreateScope())
 {
     var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
