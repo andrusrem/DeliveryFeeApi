@@ -42,7 +42,7 @@ namespace DeliveryFeeApi.Repository
                 };
                 await _context.AirTemperatureExtraFees.AddAsync(new_extra_fee);
                 _context.SaveChanges();
-                _logger.LogInformation("Created new WeatherPhenomenonExtraFee");
+                _logger.LogInformation("Created new AirTemperatureExtraFee");
                 return new_extra_fee;
 
             }
