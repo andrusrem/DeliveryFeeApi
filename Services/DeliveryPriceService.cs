@@ -11,19 +11,22 @@ namespace DeliveryFeeApi.Services
         private readonly IRegionalBaseFeeRepository _regionalBaseFeeRepository;
         private readonly IWindSpeedExtraFeeRepository _windSpeedExtraFeeRepository;
         private readonly IStationWeatherRepository _stationWeatherRepository;
+        private readonly ILogger<DeliveryPriceService> _logger;
 
         public DeliveryPriceService(
             IAirTemperatureExtraFeeRepository airTemperatureExtraFeeRepository,
             IWeatherPhenomenonExtraFeeRepository weatherPhenomenonExtraFeeRepository,
             IRegionalBaseFeeRepository regionalBaseFeeRepository,
             IWindSpeedExtraFeeRepository windSpeedExtraFeeRepository,
-            IStationWeatherRepository stationWeatherRepository)
+            IStationWeatherRepository stationWeatherRepository,
+            ILogger<DeliveryPriceService> logger)
         {
             _airTemperatureExtraFeeRepository = airTemperatureExtraFeeRepository;
             _weatherPhenomenonExtraFeeRepository = weatherPhenomenonExtraFeeRepository;
             _regionalBaseFeeRepository = regionalBaseFeeRepository;
             _windSpeedExtraFeeRepository = windSpeedExtraFeeRepository;
             _stationWeatherRepository = stationWeatherRepository;
+            _logger = logger;
         }
 
         public decimal GetAirTemperatureFee(VehicleEnum? vehicle, decimal? air_temp)
@@ -100,19 +103,25 @@ namespace DeliveryFeeApi.Services
             return 0;
         }
 
-        public StationWeather? GetStationWeather(StationEnum? station)
+        public StationWeather GetStationWeather(StationEnum station)
         {
-            var proper_name = ConvertStationEnumToName(station);
-            var station_weather = _stationWeatherRepository
-                .List().Result
-                .Where(x => x.StationName == proper_name)
-                .FirstOrDefault();
-
-            if (station_weather != null)
+            try
             {
+                var proper_name = ConvertStationEnumToName(station);
+                var station_weather = _stationWeatherRepository
+                    .List().Result
+                    .Where(x => x.StationName == proper_name)
+                    .FirstOrDefault();
+
                 return station_weather;
             }
-            return null;
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occurred while retrieving station weather: {ex.Message}");
+                throw new ApplicationException("Failed to retrieve station weather.", ex);
+            }
+            
+
 
         }
         public string? ConvertStationEnumToName(StationEnum? station)
@@ -133,15 +142,15 @@ namespace DeliveryFeeApi.Services
         }
         public StationEnum? ConvertStationNameToEnum(string? station)
         {
-            if (station == "Tallinn")
+            if (station.ToLower() == "tallinn")
             {
                 return StationEnum.Tallinn;
             }
-            else if (station == "Tartu")
+            else if (station.ToLower() == "tartu")
             {
                 return StationEnum.Tartu;
             }
-            else if (station == "Pärnu")
+            else if (station.ToLower() == "pärnu")
             {
                 return StationEnum.Pärnu;
             }
@@ -149,15 +158,15 @@ namespace DeliveryFeeApi.Services
         }
         public VehicleEnum? ConvertVehicleTypeToEnum(string? vehicle)
         {
-            if (vehicle == "Bike")
+            if (vehicle.ToLower() == "bike")
             {
                 return VehicleEnum.Bike;
             }
-            else if (vehicle == "Car")
+            else if (vehicle.ToLower() == "car")
             {
                 return VehicleEnum.Car;
             }
-            else if (vehicle == "Scooter")
+            else if (vehicle.ToLower() == "scooter")
             {
                 return VehicleEnum.Scooter;
             }

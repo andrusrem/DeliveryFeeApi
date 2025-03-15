@@ -32,7 +32,7 @@ namespace DeliveryFeeApi.Controllers
             }
 
             var response = new ResponseBody();
-            var weather_data = _service.GetStationWeather(station_name_enum);
+            var weather_data = _service.GetStationWeather((StationEnum)station_name_enum);
 
             // Fee values
             var base_fee = _service.GetBaseFee(vehicle_type_enum, station_name_enum);
@@ -46,7 +46,6 @@ namespace DeliveryFeeApi.Controllers
             }
 
             var total_fee = base_fee + air_fee + wind_speed_fee + phenomenon_fee;
-            response.Forbitten = false;
             response.Total = total_fee;
             
             

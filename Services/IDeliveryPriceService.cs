@@ -8,7 +8,7 @@ namespace DeliveryFeeApi.Services
         decimal? GetWeatherPhenomenonFee(VehicleEnum? vehicle, string? weather_phenomenon);
         decimal? GetWindSpeedFee(VehicleEnum? vehicle, decimal? wind_speed);
         decimal GetBaseFee(VehicleEnum? vehicle, StationEnum? station);
-        StationWeather GetStationWeather(StationEnum? station);
+        StationWeather GetStationWeather(StationEnum station);
         string? ConvertStationEnumToName(StationEnum? station);
         StationEnum? ConvertStationNameToEnum(string? station);
         VehicleEnum? ConvertVehicleTypeToEnum(string? vehicle);
