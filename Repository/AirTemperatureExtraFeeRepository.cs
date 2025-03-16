@@ -21,12 +21,17 @@ namespace DeliveryFeeApi.Repository
 
         public async Task<AirTemperatureExtraFee?> FindById(int id)
         {
-            var extra_fee = await _context.AirTemperatureExtraFees.FindAsync(id);
-            if (extra_fee == null)
+            try
             {
-                return null;
+                var extra_fee = await _context.AirTemperatureExtraFees.FindAsync(id);
+                return extra_fee;
             }
-            return extra_fee;
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured while looking AirTemperatureFee by it id: {Message}", ex.Message);
+                throw;
+            }
+            
         }
 
         public async Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extra_fee)
@@ -48,6 +53,7 @@ namespace DeliveryFeeApi.Repository
             }
             catch (Exception ex)
             {
+                _logger.LogError("Error occured while creating AirTemperatureFee: {Message}", ex.Message);
                 throw;
             }
 
