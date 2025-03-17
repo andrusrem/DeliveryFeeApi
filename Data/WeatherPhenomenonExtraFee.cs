@@ -1,5 +1,8 @@
-﻿namespace DeliveryFeeApi.Data
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DeliveryFeeApi.Data
 {
+    [ExcludeFromCodeCoverage]
     public class WeatherPhenomenonExtraFee
     {
         public int Id { get; set; }

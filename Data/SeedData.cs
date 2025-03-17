@@ -1,5 +1,8 @@
-﻿namespace DeliveryFeeApi.Data
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DeliveryFeeApi.Data
 {
+    [ExcludeFromCodeCoverage]
     public static class SeedData
     {
         public static void Generate(ApplicationDbContext context)

@@ -1,5 +1,8 @@
-﻿namespace DeliveryFeeApi.Data
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DeliveryFeeApi.Data
 {
+    [ExcludeFromCodeCoverage]
     public class ResponseBody
     {
         private string? _message;

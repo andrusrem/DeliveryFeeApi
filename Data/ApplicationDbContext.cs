@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.Data
 {
-    public class ApplicationDbContext : DbContext
+    [method: ExcludeFromCodeCoverage]
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
-
         public DbSet<StationWeather> StationWeathers { get; set; }
         public DbSet<AirTemperatureExtraFee> AirTemperatureExtraFees { get; set; }
         public DbSet<RegionalBaseFee> RegionalBaseFees { get; set; }

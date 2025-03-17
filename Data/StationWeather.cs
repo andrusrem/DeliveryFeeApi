@@ -1,9 +1,11 @@
 ﻿using Microsoft.CodeAnalysis.Elfie.Extensions;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
 namespace DeliveryFeeApi.Data
 {
+    [ExcludeFromCodeCoverage]
     [XmlRoot(ElementName = "station")]
     public class StationWeather
     {
