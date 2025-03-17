@@ -17,7 +17,8 @@ namespace DeliveryFeeApi.CronJobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            await _stationWeatherService.LoadToDatabase();
+            var stations = await _stationWeatherService.GetWeatherData();
+            await _stationWeatherService.LoadToDatabase(stations);
             _logger.LogInformation($"Load Weather data job executed on {DateTime.UtcNow} ");
             
         }

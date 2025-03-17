@@ -6,6 +6,6 @@ namespace DeliveryFeeApi.Services
     {
         Task<List<StationWeather>> GetWeatherData();
         List<StationWeather> ParseWeatherData(string xml);
-        Task LoadToDatabase();
+        Task LoadToDatabase(List<StationWeather> stations);
     }
 }

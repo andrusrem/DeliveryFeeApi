@@ -56,9 +56,8 @@ namespace DeliveryFeeApi.Services
             
         }
         
-        public async Task LoadToDatabase()
+        public async Task LoadToDatabase(List<StationWeather> stations)
         {
-            List<StationWeather> stations = await GetWeatherData();
 
             if (stations.Count == 0)
             {
