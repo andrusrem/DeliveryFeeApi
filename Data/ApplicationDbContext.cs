@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.Data
 {
-    [method: ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
         public DbSet<StationWeather> StationWeathers { get; set; }
