@@ -1,18 +1,14 @@
 ﻿using DeliveryFeeApi.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.Repository
 {
-    public class WindSpeedExtraFeeRepository : IWindSpeedExtraFeeRepository
+    [ExcludeFromCodeCoverage]
+    public class WindSpeedExtraFeeRepository(ApplicationDbContext context, ILogger<WindSpeedExtraFeeRepository> logger) : IWindSpeedExtraFeeRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<WindSpeedExtraFeeRepository> _logger;
-
-        public WindSpeedExtraFeeRepository(ApplicationDbContext context, ILogger<WindSpeedExtraFeeRepository> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILogger<WindSpeedExtraFeeRepository> _logger = logger;
 
         public async Task<List<WindSpeedExtraFee>> List()
         {

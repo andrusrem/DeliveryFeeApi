@@ -1,18 +1,14 @@
 ﻿using DeliveryFeeApi.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.Repository
 {
-    public class RegionalBaseFeeRepository : IRegionalBaseFeeRepository
+    [ExcludeFromCodeCoverage]
+    public class RegionalBaseFeeRepository(ApplicationDbContext context, ILogger<RegionalBaseFeeRepository> logger) : IRegionalBaseFeeRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<RegionalBaseFeeRepository> _logger;
-
-        public RegionalBaseFeeRepository(ApplicationDbContext context, ILogger<RegionalBaseFeeRepository> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILogger<RegionalBaseFeeRepository> _logger = logger;
 
         public async Task<List<RegionalBaseFee>> List()
         {

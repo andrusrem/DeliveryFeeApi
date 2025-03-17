@@ -1,18 +1,14 @@
 ﻿using DeliveryFeeApi.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.Repository
 {
-    public class AirTemperatureExtraFeeRepository : IAirTemperatureExtraFeeRepository
+    [ExcludeFromCodeCoverage]
+    public class AirTemperatureExtraFeeRepository(ApplicationDbContext context, ILogger<AirTemperatureExtraFeeRepository> logger) : IAirTemperatureExtraFeeRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<AirTemperatureExtraFeeRepository> _logger;
-
-        public AirTemperatureExtraFeeRepository(ApplicationDbContext context, ILogger<AirTemperatureExtraFeeRepository> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILogger<AirTemperatureExtraFeeRepository> _logger = logger;
 
         public async Task<List<AirTemperatureExtraFee>> List()
         {
