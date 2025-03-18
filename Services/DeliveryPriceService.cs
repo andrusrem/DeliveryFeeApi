@@ -1,124 +1,113 @@
 ﻿using DeliveryFeeApi.Data;
 using DeliveryFeeApi.Repository;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 
 namespace DeliveryFeeApi.Services
 {
-    public class DeliveryPriceService : IDeliveryPriceService
+    public class DeliveryPriceService(
+        IAirTemperatureExtraFeeRepository airTemperatureExtraFeeRepository,
+        IWeatherPhenomenonExtraFeeRepository weatherPhenomenonExtraFeeRepository,
+        IRegionalBaseFeeRepository regionalBaseFeeRepository,
+        IWindSpeedExtraFeeRepository windSpeedExtraFeeRepository,
+        IStationWeatherRepository stationWeatherRepository,
+        ILogger<DeliveryPriceService> logger) : IDeliveryPriceService
     {
-        private readonly IAirTemperatureExtraFeeRepository _airTemperatureExtraFeeRepository;
-        private readonly IWeatherPhenomenonExtraFeeRepository _weatherPhenomenonExtraFeeRepository;
-        private readonly IRegionalBaseFeeRepository _regionalBaseFeeRepository;
-        private readonly IWindSpeedExtraFeeRepository _windSpeedExtraFeeRepository;
-        private readonly IStationWeatherRepository _stationWeatherRepository;
-        private readonly ILogger<DeliveryPriceService> _logger;
+        private readonly IAirTemperatureExtraFeeRepository _airTemperatureExtraFeeRepository = airTemperatureExtraFeeRepository;
+        private readonly IWeatherPhenomenonExtraFeeRepository _weatherPhenomenonExtraFeeRepository = weatherPhenomenonExtraFeeRepository;
+        private readonly IRegionalBaseFeeRepository _regionalBaseFeeRepository = regionalBaseFeeRepository;
+        private readonly IWindSpeedExtraFeeRepository _windSpeedExtraFeeRepository = windSpeedExtraFeeRepository;
+        private readonly IStationWeatherRepository _stationWeatherRepository = stationWeatherRepository;
+        private readonly ILogger<DeliveryPriceService> _logger = logger;
 
-        public DeliveryPriceService(
-            IAirTemperatureExtraFeeRepository airTemperatureExtraFeeRepository,
-            IWeatherPhenomenonExtraFeeRepository weatherPhenomenonExtraFeeRepository,
-            IRegionalBaseFeeRepository regionalBaseFeeRepository,
-            IWindSpeedExtraFeeRepository windSpeedExtraFeeRepository,
-            IStationWeatherRepository stationWeatherRepository,
-            ILogger<DeliveryPriceService> logger)
+        public decimal GetAirTemperatureFee(VehicleEnum vehicle, decimal airTemp)
         {
-            _airTemperatureExtraFeeRepository = airTemperatureExtraFeeRepository;
-            _weatherPhenomenonExtraFeeRepository = weatherPhenomenonExtraFeeRepository;
-            _regionalBaseFeeRepository = regionalBaseFeeRepository;
-            _windSpeedExtraFeeRepository = windSpeedExtraFeeRepository;
-            _stationWeatherRepository = stationWeatherRepository;
-            _logger = logger;
-        }
-
-        public decimal GetAirTemperatureFee(VehicleEnum? vehicle, decimal? air_temp)
-        {
-            var air_fee = _airTemperatureExtraFeeRepository
+            var airFee = _airTemperatureExtraFeeRepository
                 .List().Result
                 .Where(x => x.VehicleType == vehicle)
-                .Where(x => x.LowerTemperature < air_temp && x.UpperTemperature > air_temp)
+                .Where(x => x.LowerTemperature < airTemp)
+                .Where(x => x.UpperTemperature > airTemp)
                 .FirstOrDefault();
 
-            if (air_fee != null)
+            if (airFee != null)
             {
-                return air_fee.Price;
+                return airFee.Price;
             }
             return 0;
         }
 
-        public decimal? GetWeatherPhenomenonFee(VehicleEnum? vehicle, string? weather_phenomenon) 
+        public decimal? GetWeatherPhenomenonFee(VehicleEnum vehicle, string weatherPhenomenon) 
         {
-            var phenomenon_fee = _weatherPhenomenonExtraFeeRepository
+            var phenomenonFee = _weatherPhenomenonExtraFeeRepository
                 .List().Result
                 .Where(x => x.VehicleType == vehicle)
-                .Where(x => x.WeatherPhenomenon == weather_phenomenon)
+                .Where(x => x.WeatherPhenomenon == weatherPhenomenon)
                 .FirstOrDefault();
-            if(phenomenon_fee != null)
+            if(phenomenonFee != null)
             {
-                if(phenomenon_fee.Price != null) 
+                if(phenomenonFee.Forbitten == false) 
                 {
-                    return phenomenon_fee.Price;
+                    return phenomenonFee.Price;
                 }
-                else if (phenomenon_fee.Forbitten == true)
-                {
-                    // When this function returns null, it means that operations on this vehicle are forbidden
-                    return null;
-                }
+                // When this function returns null, it means that operations on this vehicle are forbidden
+                return null;
+                
             }
             return 0;
         }
 
-        public decimal? GetWindSpeedFee(VehicleEnum? vehicle, decimal? wind_speed) 
+        public decimal? GetWindSpeedFee(VehicleEnum vehicle, decimal windSpeed) 
         {
-            var wind_fee = _windSpeedExtraFeeRepository
+            var windFee = _windSpeedExtraFeeRepository
                 .List().Result
                 .Where(x => x.VehicleType == vehicle)
-                .Where(x => x.LowerSpeed < wind_speed)
+                .Where(x => x.LowerSpeed < windSpeed)
+                .Where(x => x.UpperSpeed > windSpeed)
                 .FirstOrDefault();
 
-            if (wind_fee != null)
+            if (windFee != null)
             {
-                if (wind_fee.Price != null)
+                if (windFee.Forbitten == false)
                 {
-                    return wind_fee.Price;
+                    return windFee.Price;
                 }
-                else if(wind_fee.Forbitten == true)
-                {
-                    // When this function returns null, it means that operations on this vehicle are forbidden
-                    return null;
-                }
+                // When this function returns null, it means that operations on this vehicle are forbidden
+                return null;
             }
             return 0;
         }
 
-        public decimal GetBaseFee(VehicleEnum? vehicle, StationEnum? station)
+        public decimal GetBaseFee(VehicleEnum vehicle, StationEnum station)
         {
-            var base_fee = _regionalBaseFeeRepository
+            var baseFee = _regionalBaseFeeRepository
                 .List().Result
                 .Where(x => x.VehicleType == vehicle)
                 .Where(x => x.StationName == station)
                 .FirstOrDefault();
-            if (base_fee != null)
+            if (baseFee != null)
             {
-                return base_fee.Price;
+                return baseFee.Price;
             }
             return 0;
         }
 
-        public StationWeather GetStationWeather(StationEnum station)
+        public StationWeather GetStationWeather(StationEnum? station)
         {
             try
             {
-                var proper_name = ConvertStationEnumToName(station);
-                var station_weather = _stationWeatherRepository
+                var properName = ConvertStationEnumToName(station);
+                var stationWeather = _stationWeatherRepository
                     .List().Result
-                    .Where(x => x.StationName == proper_name)
+                    .Where(x => x.StationName == properName)
+                    .Where(x => x.Timestamp < DateTime.Now.ToLong())
+                    .OrderByDescending(x => x.Timestamp)
                     .FirstOrDefault();
 
-                return station_weather;
+                return stationWeather;
             }
-            catch (Exception ex)
+            catch (ArgumentNullException ex)
             {
-                _logger.LogError($"Error occurred while retrieving station weather: {ex.Message}");
-                throw new ApplicationException("Failed to retrieve station weather.", ex);
+                _logger.LogError(ex, "Error occurred while retrieving station weather: Failed to retrieve station weather.");
+                throw;
             }
             
 
@@ -140,7 +129,7 @@ namespace DeliveryFeeApi.Services
             }
             return "";
         }
-        public StationEnum? ConvertStationNameToEnum(string? station)
+        public StationEnum? ConvertStationNameToEnum(string station)
         {
             if (station.ToLower() == "tallinn")
             {
@@ -156,7 +145,7 @@ namespace DeliveryFeeApi.Services
             }
             return null;
         }
-        public VehicleEnum? ConvertVehicleTypeToEnum(string? vehicle)
+        public VehicleEnum? ConvertVehicleTypeToEnum(string vehicle)
         {
             if (vehicle.ToLower() == "bike")
             {

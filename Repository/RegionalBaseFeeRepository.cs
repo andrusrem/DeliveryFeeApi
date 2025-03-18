@@ -17,28 +17,28 @@ namespace DeliveryFeeApi.Repository
 
         public async Task<RegionalBaseFee> FindById(int id)
         {
-            var base_fee = await _context.RegionalBaseFees.FindAsync(id);
-            if (base_fee == null)
+            var baseFee = await _context.RegionalBaseFees.FindAsync(id);
+            if (baseFee == null)
             {
                 return null;
             }
-            return base_fee;
+            return baseFee;
         }
 
-        public async Task<RegionalBaseFee> Save(RegionalBaseFee base_fee)
+        public async Task<RegionalBaseFee> Save(RegionalBaseFee baseFee)
         {
             try
             {
-                var new_base_fee = new RegionalBaseFee
+                var newBaseFee = new RegionalBaseFee
                 {
-                    VehicleType = base_fee.VehicleType,
-                    StationName = base_fee.StationName,
-                    Price = base_fee.Price,
+                    VehicleType = baseFee.VehicleType,
+                    StationName = baseFee.StationName,
+                    Price = baseFee.Price,
                 };
-                await _context.RegionalBaseFees.AddAsync(base_fee);
+                await _context.RegionalBaseFees.AddAsync(baseFee);
                 _context.SaveChanges();
                 _logger.LogInformation("Created new RegionalBaseFee");
-                return base_fee;
+                return baseFee;
 
             }
             catch (Exception ex)

@@ -29,7 +29,7 @@ namespace DeliveryFeeApi.Repository
         {
             try
             {
-                var new_station = new StationWeather
+                var newStation = new StationWeather
                 {
                     StationName = station.StationName,
                     VmoCode = station.VmoCode,
@@ -38,10 +38,10 @@ namespace DeliveryFeeApi.Repository
                     WeatherPhenomenon = station.WeatherPhenomenon,
                     Timestamp = station.Timestamp
                 };
-                await _context.StationWeathers.AddAsync(new_station);
+                await _context.StationWeathers.AddAsync(newStation);
                 _context.SaveChanges();
                 _logger.LogInformation("Created new StationWeather");
-                return new_station;
+                return newStation;
                 
             }
             catch (Exception ex)

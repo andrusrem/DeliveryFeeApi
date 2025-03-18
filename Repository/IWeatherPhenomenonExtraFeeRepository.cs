@@ -6,6 +6,6 @@ namespace DeliveryFeeApi.Repository
     {
         Task<List<WeatherPhenomenonExtraFee>> List();
         Task<WeatherPhenomenonExtraFee?> FindById(int id);
-        Task<WeatherPhenomenonExtraFee> Save(WeatherPhenomenonExtraFee extra_fee);
+        Task<WeatherPhenomenonExtraFee> Save(WeatherPhenomenonExtraFee extraFee);
     }
 }

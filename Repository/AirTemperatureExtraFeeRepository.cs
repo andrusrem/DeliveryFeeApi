@@ -19,8 +19,8 @@ namespace DeliveryFeeApi.Repository
         {
             try
             {
-                var extra_fee = await _context.AirTemperatureExtraFees.FindAsync(id);
-                return extra_fee;
+                var extraFee = await _context.AirTemperatureExtraFees.FindAsync(id);
+                return extraFee;
             }
             catch (Exception ex)
             {
@@ -30,21 +30,21 @@ namespace DeliveryFeeApi.Repository
             
         }
 
-        public async Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extra_fee)
+        public async Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extraFee)
         {
             try
             {
-                var new_extra_fee = new AirTemperatureExtraFee
+                var newExtraFee = new AirTemperatureExtraFee
                 {
-                    LowerTemperature = extra_fee.LowerTemperature,
-                    UpperTemperature = extra_fee.UpperTemperature,
-                    VehicleType = extra_fee.VehicleType,
-                    Price = extra_fee.Price,
+                    LowerTemperature = extraFee.LowerTemperature,
+                    UpperTemperature = extraFee.UpperTemperature,
+                    VehicleType = extraFee.VehicleType,
+                    Price = extraFee.Price,
                 };
-                await _context.AirTemperatureExtraFees.AddAsync(new_extra_fee);
+                await _context.AirTemperatureExtraFees.AddAsync(newExtraFee);
                 _context.SaveChanges();
                 _logger.LogInformation("Created new AirTemperatureExtraFee");
-                return new_extra_fee;
+                return newExtraFee;
 
             }
             catch (Exception ex)

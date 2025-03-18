@@ -17,29 +17,29 @@ namespace DeliveryFeeApi.Repository
 
         public async Task<WindSpeedExtraFee?> FindById(int id)
         {
-            var extra_fee = await _context.WindSpeedExtraFees.FindAsync(id);
-            if (extra_fee == null)
+            var extraFee = await _context.WindSpeedExtraFees.FindAsync(id);
+            if (extraFee == null)
             {
                 return null;
             }
-            return extra_fee;
+            return extraFee;
         }
 
-        public async Task<WindSpeedExtraFee> Save(WindSpeedExtraFee extra_fee)
+        public async Task<WindSpeedExtraFee> Save(WindSpeedExtraFee extraFee)
         {
             try
             {
-                var new_extra_fee = new WindSpeedExtraFee
+                var newExtraFee = new WindSpeedExtraFee
                 {
-                    LowerSpeed = extra_fee.LowerSpeed,
-                    UpperSpeed = extra_fee.UpperSpeed,
-                    VehicleType = extra_fee.VehicleType,
-                    Price = extra_fee.Price,
+                    LowerSpeed = extraFee.LowerSpeed,
+                    UpperSpeed = extraFee.UpperSpeed,
+                    VehicleType = extraFee.VehicleType,
+                    Price = extraFee.Price,
                 };
-                await _context.WindSpeedExtraFees.AddAsync(new_extra_fee);
+                await _context.WindSpeedExtraFees.AddAsync(newExtraFee);
                 _context.SaveChanges();
                 _logger.LogInformation("Created new WindSpeedExtraFee");
-                return new_extra_fee;
+                return newExtraFee;
 
             }
             catch (Exception ex)

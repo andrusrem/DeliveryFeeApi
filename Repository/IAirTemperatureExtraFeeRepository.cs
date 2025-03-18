@@ -6,6 +6,6 @@ namespace DeliveryFeeApi.Repository
     {
         Task<List<AirTemperatureExtraFee>> List();
         Task<AirTemperatureExtraFee?> FindById(int id);
-        Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extra_fee);
+        Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extraFee);
     }
 }
