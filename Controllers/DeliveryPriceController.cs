@@ -22,13 +22,9 @@ namespace DeliveryFeeApi.Controllers
         {
             var stationNameEnum = _service.ConvertStationNameToEnum(station);
             var vehicleTypeEnum = _service.ConvertVehicleTypeToEnum(vehicle);
-            if (stationNameEnum == null)
+            if (stationNameEnum == null || vehicleTypeEnum == null)
             {
-                return BadRequest("Invalid station: we not operate in that area or you send station name in wrong format.");
-            }
-            else if (vehicleTypeEnum == null)
-            {
-                return BadRequest("Invalid vehicle: you send vehicle type wrongly.");
+                return BadRequest("Invalid input: Please check if your input is valid. Station: {Tallinn, Tartu, or Pärnu}. Vehicle: {Car, Scooter, or Bike}.");
             }
 
             var response = new ResponseBody();
