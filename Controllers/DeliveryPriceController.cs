@@ -29,6 +29,10 @@ namespace DeliveryFeeApi.Controllers
 
             var response = new ResponseBody();
             var weatherData = _service.GetStationWeather((StationEnum)stationNameEnum);
+            if(weatherData == null)
+            {
+                return NotFound("Not found data needed for calculation. Please try later.");
+            }
 
             // Fee values
             var baseFee = _service.GetBaseFee((VehicleEnum)vehicleTypeEnum, (StationEnum)stationNameEnum);
