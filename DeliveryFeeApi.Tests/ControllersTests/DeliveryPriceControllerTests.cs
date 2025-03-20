@@ -111,5 +111,26 @@ namespace DeliveryFeeApi.DeliveryFeeApi.Tests.ControllersTests
             var objectResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(response.ToString(), objectResult.Value.ToString());
         }
+
+        [Fact]
+        public void GetDeliveryPrice_return_NotFound_if_weather_data_not_found()
+        {
+            //Arrange
+            var station = "Tallinn";
+            var vehicle = "Bike";
+            var baseFee = 3.0m;
+            StationWeather weather = null;
+
+
+            _mockPriceService.Setup(x => x.ConvertStationNameToEnum(station)).Returns(Data.StationEnum.Tallinn);
+            _mockPriceService.Setup(x => x.ConvertVehicleTypeToEnum(vehicle)).Returns(VehicleEnum.Bike);
+
+            _mockPriceService.Setup(x => x.GetStationWeather(StationEnum.Tallinn)).Returns(weather);
+
+            //Act
+            var result = _controller.GetDeliveryPrice(station, vehicle).Result;
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(result);
+        }
     }
 }
