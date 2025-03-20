@@ -7,7 +7,7 @@
 #### 1. I decided to use an SQLite database for this project because of its simplicity and ease of use in this scenario.
 #### 2. I decided to seed all existing fee data into the database. Now, I can easily retrieve this data when needed and update the fee rates.
 ### Here is how my data models is structured:
-![DataStructureEd](https://github.com/user-attachments/assets/81261318-4e38-43d0-b615-bb7fea8b60d0)
+![Screenshot 2025-03-20 133115](https://github.com/user-attachments/assets/46a010fe-a96a-4c6a-b0cb-ab0037e18230)
 
 
 ## Scheduled Task:
