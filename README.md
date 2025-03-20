@@ -26,7 +26,7 @@
 ![Screenshot 2025-03-20 111520](https://github.com/user-attachments/assets/92352976-ad7b-407e-bb69-38545cb0938a)
 #### Posible responses: 
 	
-##### Response body (OK - Status 200): Station Tartu, Vehicle Bike, and good weather
+##### 1. Response body (OK - Status 200): Station Tartu, Vehicle Bike, and good weather
 ```json
 {
   "total": 2.5,
@@ -35,7 +35,7 @@
 }
 ```
 
-##### Response body (OK - Status 200): Station Tartu, Vehicle Bike, and wind speed exceeds 20 m/s
+##### 2. Response body (OK - Status 200): Station Tartu, Vehicle Bike, and wind speed exceeds 20 m/s
 ```json
 {
   "total": null,
@@ -44,10 +44,10 @@
 }
 ```
 
-##### Bad Request (400): If the request parameters contain invalid values (i.e., anything other than Tallinn, Tartu, Pärnu for station or Car, Scooter, Bike for vehicle).
+##### 3. Bad Request (400): If the request parameters contain invalid values (i.e., anything other than Tallinn, Tartu, Pärnu for station or Car, Scooter, Bike for vehicle).
 ![Screenshot 2025-03-20 113909](https://github.com/user-attachments/assets/0f8dc663-d919-471e-b7d3-85b1355dc3f5)
 
-##### Not Found (404): If the weather data is missing from the database, we cannot calculate the fee because it is based on that data.
+##### 4. Not Found (404): If the weather data is missing from the database, we cannot calculate the fee because it is based on that data.
 ![Screenshot 2025-03-20 130920](https://github.com/user-attachments/assets/974540a2-84b1-48a5-9e65-8d408bf2f937)
 
 
