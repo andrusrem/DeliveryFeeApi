@@ -24,6 +24,22 @@ namespace DeliveryFeeApi.Repository
             }
             return extraFee;
         }
+        public async Task<WindSpeedExtraFee> Update(WindSpeedExtraFee extraFee, decimal? price, bool? forbitten)
+        {
+            if(price != null) 
+            {
+                extraFee.Price = price;
+            }
+            if(forbitten != null)
+            {
+                extraFee.Forbitten = forbitten;
+            }
+            
+            _context.WindSpeedExtraFees.Update(extraFee);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation($"WindSpeedExtraFee with lower {extraFee.LowerSpeed} m/s and upper {extraFee.UpperSpeed} m/s speed updated.");
+            return extraFee;
+        }
 
         public async Task<WindSpeedExtraFee> Save(WindSpeedExtraFee extraFee)
         {
@@ -47,6 +63,12 @@ namespace DeliveryFeeApi.Repository
                 throw;
             }
 
+        }
+
+        public async Task DeleteFee(WindSpeedExtraFee fee)
+        {
+            _context.WindSpeedExtraFees.Remove(fee);
+            await _context.SaveChangesAsync();
         }
     }
 }
