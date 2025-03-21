@@ -28,6 +28,7 @@ namespace DeliveryFeeApi
             builder.Services.AddScoped<IStationWeatherService, StationWeatherService>();
             builder.Services.AddScoped<IDeliveryPriceService, DeliveryPriceService>();
             builder.Services.AddScoped<IAirTemperatureExtraFeeService, AirTemperatureExtraFeeService>();
+            builder.Services.AddScoped<IRegionalBaseFeeService, RegionalBaseFeeService>();
             builder.Services.AddScoped<IStationWeatherRepository, StationWeatherRepository>();
             builder.Services.AddScoped<IRegionalBaseFeeRepository, RegionalBaseFeeRepository>();
             builder.Services.AddScoped<IWindSpeedExtraFeeRepository, WindSpeedExtraFeeRepository>();

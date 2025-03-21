@@ -24,6 +24,14 @@ namespace DeliveryFeeApi.Repository
             }
             return baseFee;
         }
+        public async Task<RegionalBaseFee> Update(RegionalBaseFee baseFee, decimal price)
+        {
+            baseFee.Price = price;
+            _context.RegionalBaseFees.Update(baseFee);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation($"RegionalBaseFee is updated.");
+            return baseFee;
+        }
 
         public async Task<RegionalBaseFee> Save(RegionalBaseFee baseFee)
         {
@@ -46,6 +54,12 @@ namespace DeliveryFeeApi.Repository
                 throw;
             }
 
+        }
+
+        public async Task DeleteFee(RegionalBaseFee baseFee)
+        {
+            _context.RegionalBaseFees.Remove(baseFee);
+            await _context.SaveChangesAsync();
         }
     }
 }
