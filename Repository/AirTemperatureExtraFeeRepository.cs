@@ -30,6 +30,15 @@ namespace DeliveryFeeApi.Repository
             
         }
 
+        public async Task<AirTemperatureExtraFee> Update(AirTemperatureExtraFee extraFee, decimal price)
+        {
+             extraFee.Price = price;
+             _context.AirTemperatureExtraFees.Update(extraFee);
+             await _context.SaveChangesAsync();
+             _logger.LogInformation($"AirTemperatureExtraFee with lower {extraFee.LowerTemperature} and upper{extraFee.UpperTemperature} temperature updated.");
+             return extraFee;
+        }
+
         public async Task<AirTemperatureExtraFee> Save(AirTemperatureExtraFee extraFee)
         {
             try
@@ -52,7 +61,11 @@ namespace DeliveryFeeApi.Repository
                 _logger.LogError("Error occured while creating AirTemperatureFee: {Message}", ex.Message);
                 throw;
             }
-
+        }
+        public async Task DeleteFee(AirTemperatureExtraFee fee)
+        {
+            _context.AirTemperatureExtraFees.Remove(fee);
+            await _context.SaveChangesAsync();
         }
     }
 }
