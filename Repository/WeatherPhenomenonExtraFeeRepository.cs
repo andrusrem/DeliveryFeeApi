@@ -25,6 +25,23 @@ namespace DeliveryFeeApi.Repository
             return extraFee;
         }
 
+        public async Task<WeatherPhenomenonExtraFee> Update(WeatherPhenomenonExtraFee extraFee, decimal? price, bool? forbitten)
+        {
+            if (price != null)
+            {
+                extraFee.Price = price;
+            }
+            if (forbitten != null)
+            {
+                extraFee.Forbitten = forbitten;
+            }
+
+            _context.WeatherPhenomenonExtraFees.Update(extraFee);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation($"WeatherPhenomenonExtraFee is updated.");
+            return extraFee;
+        }
+
         public async Task<WeatherPhenomenonExtraFee> Save(WeatherPhenomenonExtraFee extraFee)
         {
             try
@@ -34,6 +51,7 @@ namespace DeliveryFeeApi.Repository
                     WeatherPhenomenon = extraFee.WeatherPhenomenon,
                     VehicleType = extraFee.VehicleType,
                     Price = extraFee.Price,
+                    Forbitten = extraFee.Forbitten,
                 };
                 await _context.WeatherPhenomenonExtraFees.AddAsync(newExtraFee);
                 _context.SaveChanges();
@@ -46,6 +64,12 @@ namespace DeliveryFeeApi.Repository
                 throw;
             }
 
+        }
+
+        public async Task DeleteFee(WeatherPhenomenonExtraFee fee)
+        {
+            _context.WeatherPhenomenonExtraFees.Remove(fee);
+            await _context.SaveChangesAsync();
         }
     }
 }
