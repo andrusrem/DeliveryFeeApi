@@ -4,9 +4,11 @@ using DeliveryFeeApi.Services;
 using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.DeliveryFeeApi.Tests.ServiceTests
 {
+    [ExcludeFromCodeCoverage]
     public class WindSpeedExtraFeeServiceTests
     {
         private readonly Mock<IWindSpeedExtraFeeRepository> _mockWindSpeedExtraFeeRepository;
