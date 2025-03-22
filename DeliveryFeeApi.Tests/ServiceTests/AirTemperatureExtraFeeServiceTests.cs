@@ -4,9 +4,11 @@ using DeliveryFeeApi.Services;
 using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DeliveryFeeApi.DeliveryFeeApi.Tests.ServiceTests
 {
+    [ExcludeFromCodeCoverage]
     public class AirTemperatureExtraFeeServiceTests
     {
         private readonly Mock<IAirTemperatureExtraFeeRepository> _mockAirTemperatureExtraFeeRepository;
@@ -61,7 +63,7 @@ namespace DeliveryFeeApi.DeliveryFeeApi.Tests.ServiceTests
         }
 
         [Fact]
-        public void FindByVehicleTypeLowerAndUpperSpeed_return_fee_if_fee()
+        public void FindByVehicleTypeLowerAndUpperPoints_return_fee_if_fee()
         {
             //Arrange
             var vehicle = VehicleEnum.Scooter;
