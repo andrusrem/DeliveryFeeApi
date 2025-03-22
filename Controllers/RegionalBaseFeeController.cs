@@ -68,16 +68,16 @@ namespace DeliveryFeeApi.Controllers
         }
 
         [HttpDelete("delete")]
-        public ActionResult DeleteFee(int id)
+        public async Task<ActionResult> DeleteFee(int id)
         {
-            var delete = _regionalBaseFeeService.DeleteFee(id);
+            var delete = await _regionalBaseFeeService.DeleteFee(id);
 
             if (delete != null)
             {
                 return NoContent();
             }
 
-            return BadRequest("No such fee. Maybe was given wrong Id.");
+            return NotFound("No such fee. Maybe was given wrong Id.");
         }
     }
 }
