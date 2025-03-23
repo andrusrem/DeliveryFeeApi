@@ -7,6 +7,7 @@
 - [Testing](#testing)
 - [Endpoints](#endpoints)
   - [1. The first and main endpoint provides the delivery price](#1-the-first-and-main-endpoint-provides-the-delivery-price)
+  - [Enums used in next endpoints](#enums-used-in-next-endpoints)
   - [2. CRUD Endpoints for Regional Base Fee Management](#2-crud-endpoints-for-regional-base-fee-management)
   - [3. CRUD Endpoints for Air Temperature Extra Fee Management](#3-crud-endpoints-for-air-temperature-extra-fee-management)
   - [4. CRUD Endpoints for Wind Speed Extra Fee Management](#4-crud-endpoints-for-wind-speed-extra-fee-management)
@@ -65,7 +66,7 @@ This is a **GET** method with two query parameters: **station**(Tallinn, Tartu a
  4. **Not Found (404):** If the weather data is missing from the database, we cannot calculate the fee because it is based on that data.
 ![Screenshot 2025-03-20 130920](https://github.com/user-attachments/assets/974540a2-84b1-48a5-9e65-8d408bf2f937)
 
-### Enums used in next endpoints:
+## Enums used in next endpoints:
 **Stations Enum** explain:
 ```json
 {
